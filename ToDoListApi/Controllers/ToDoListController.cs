@@ -1,5 +1,8 @@
-﻿using Data.Entities.ToDoListDatabase;
+﻿using AutoMapper;
+using Data.DTOs;
+using Data.Entities.ToDoListDatabase;
 using Data.Interfaces;
+using Data.Spec.ToDoList;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ToDoListApi.Controllers
@@ -9,7 +12,8 @@ namespace ToDoListApi.Controllers
         IGenericRepository<Layout> layoutRepository,
         IGenericRepository<Data.Entities.ToDoListDatabase.Task> taskRepository,
         IGenericRepository<User> userRepository,
-        IGenericRepository<WorkPosition> workPositionRepository
+        IGenericRepository<WorkPosition> workPositionRepository,
+        IMapper mapper
         ) : Controller
     {
         private readonly IGenericRepository<Location> _locationRepository = locationRepository;
@@ -17,41 +21,50 @@ namespace ToDoListApi.Controllers
         private readonly IGenericRepository<Data.Entities.ToDoListDatabase.Task> _taskRepository = taskRepository;
         private readonly IGenericRepository<User> _userRepository = userRepository;
         private readonly IGenericRepository<WorkPosition> _workPositionRepository = workPositionRepository;
+        private readonly IMapper _mapper = mapper;
 
         [HttpGet("LocationList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Location>> RetriveLocationList()
+        public async Task<ActionResult<LocationRetriveDTO>> RetriveLocationList()
         {
             var locationList = await _locationRepository.ListAllAsync();
-            return Ok(locationList);
+            var data = _mapper.Map<List<Location>, List<LocationRetriveDTO>>(locationList);
+            return Ok(data);
         }
         [HttpGet("LayoutList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Layout>> RetriveLayoutList()
+        public async Task<ActionResult<LayoutRetriveDTO>> RetriveLayoutList()
         {
-            var layoutList = await _layoutRepository.ListAllAsync();
-            return Ok(layoutList);
+            var spec = new LayoutSpec();
+            var layoutList = await _layoutRepository.ListAllWithSpecAsync(spec);
+            var data = _mapper.Map<List<Layout>, List<LayoutRetriveDTO>>(layoutList);
+            return Ok(data);
         }
         [HttpGet("TaskList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Data.Entities.ToDoListDatabase.Task>> RetriveTaskList()
+        public async Task<ActionResult<TaskRetriveDTO>> RetriveTaskList()
         {
-            var taskList = await _taskRepository.ListAllAsync();
-            return Ok(taskList);
+            var spec = new TaskSpec();
+            var taskList = await _taskRepository.ListAllWithSpecAsync(spec);
+            var data = _mapper.Map<List<Data.Entities.ToDoListDatabase.Task>, List<TaskRetriveDTO>>(taskList);
+            return Ok(data);
         }
         [HttpGet("UserList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<User>> RetriveUserList()
+        public async Task<ActionResult<UserRetriveDTO>> RetriveUserList()
         {
-            var userList = await _userRepository.ListAllAsync();
-            return Ok(userList);
+            var spec = new UserSpec();
+            var userList = await _userRepository.ListAllWithSpecAsync(spec);
+            var data = _mapper.Map<List<User>, List<UserRetriveDTO>>(userList);
+            return Ok(data);
         }
         [HttpGet("WorkPositionList")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<WorkPosition>> RetriveWorkPositionList()
+        public async Task<ActionResult<WorkPositionRetriveDTO>> RetriveWorkPositionList()
         {
             var workPositionList = await _workPositionRepository.ListAllAsync();
-            return Ok(workPositionList);
+            var data = _mapper.Map<List<WorkPosition>, List<WorkPositionRetriveDTO>>(workPositionList);
+            return Ok(data);
         }
 
     }

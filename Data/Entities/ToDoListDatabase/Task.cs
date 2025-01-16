@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Data.Entities.ToDoListDatabase;
+﻿namespace Data.Entities.ToDoListDatabase;
 
 public partial class Task
 {
     public int TaskId { get; set; }
 
-    public string Task1 { get; set; } = null!;
+    public string Titile { get; set; } = null!;
 
     public int UserId { get; set; }
 

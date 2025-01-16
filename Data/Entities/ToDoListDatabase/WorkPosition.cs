@@ -1,4 +1,7 @@
-﻿namespace Data.Entities.ToDoListDatabase;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Data.Entities.ToDoListDatabase;
 
 public partial class WorkPosition
 {

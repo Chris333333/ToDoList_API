@@ -1,13 +1,6 @@
-﻿using Data.Entities.ToDoListDatabase;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Data.DTOs
+﻿namespace Data.DTOs
 {
-    internal class UserRetriveDTO
+    public class UserRetriveDTO
     {
         public int UserId { get; set; }
 
