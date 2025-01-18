@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Data.Entities.ToDoListDatabase;
+using Data.DTOs;
 
 namespace ToDoListApi.Profiles
 {
@@ -6,11 +8,17 @@ namespace ToDoListApi.Profiles
     {
         public MainProfile()
         {
-            CreateMap<Data.Entities.ToDoListDatabase.Task, Data.DTOs.TaskRetriveDTO>();
-            CreateMap<Data.Entities.ToDoListDatabase.User, Data.DTOs.UserRetriveDTO>();
-            CreateMap<Data.Entities.ToDoListDatabase.WorkPosition, Data.DTOs.WorkPositionRetriveDTO>();
-            CreateMap<Data.Entities.ToDoListDatabase.Location, Data.DTOs.LocationRetriveDTO>();
-            CreateMap<Data.Entities.ToDoListDatabase.Layout, Data.DTOs.LayoutRetriveDTO>();
+            CreateMap<Data.Entities.ToDoListDatabase.Task,TaskRetriveDTO>();
+            CreateMap<User, UserRetriveDTO>();
+            CreateMap<WorkPosition, WorkPositionRetriveDTO>();
+            CreateMap<Location, LocationRetriveDTO>();
+            CreateMap<Layout, LayoutRetriveDTO>();
+
+            CreateMap<LocationDTO, Location>();
+            CreateMap<WorkPositionDTO, WorkPosition>();
+            CreateMap<UserAddDTO, User>();
+            CreateMap<LayoutAddDTO, Layout>();
+            CreateMap<TaskAddDTO, Data.Entities.ToDoListDatabase.Task>();
         }
     }
 }
