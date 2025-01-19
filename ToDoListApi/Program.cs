@@ -2,6 +2,7 @@ using App.Repo;
 using Data.Entities.ToDoListDatabase;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using ToDoListApi.Middleware;
 using ToDoListApi.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,7 @@ builder.Services.AddAutoMapper(typeof(MainProfile));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(ToDoListGenericRepository<>));
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

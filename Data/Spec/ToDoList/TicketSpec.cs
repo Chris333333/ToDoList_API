@@ -2,9 +2,9 @@
 
 namespace Data.Spec.ToDoList
 {
-    public class TaskSpec : BaseSpec<Data.Entities.ToDoListDatabase.Task>
+    public class TicketSpec : BaseSpec<Ticket>
     {
-        public TaskSpec()
+        public TicketSpec()
         {
             AddInclude(x => x.User);
             AddInclude(x => x.Layout);

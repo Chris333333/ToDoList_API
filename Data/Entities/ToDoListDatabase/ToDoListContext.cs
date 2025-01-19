@@ -15,11 +15,13 @@ public partial class ToDoListContext : DbContext
     {
     }
 
+    public virtual DbSet<Comment> Comments { get; set; }
+
     public virtual DbSet<Layout> Layouts { get; set; }
 
     public virtual DbSet<Location> Locations { get; set; }
 
-    public virtual DbSet<Task> Tasks { get; set; }
+    public virtual DbSet<Ticket> Tickets { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -31,6 +33,28 @@ public partial class ToDoListContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Comment>(entity =>
+        {
+            entity.Property(e => e.CommentId).HasColumnName("CommentID");
+            entity.Property(e => e.Content).HasColumnType("text");
+            entity.Property(e => e.CreateDt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("CreateDT");
+            entity.Property(e => e.TicketId).HasColumnName("TicketID");
+            entity.Property(e => e.UserId).HasColumnName("UserID");
+
+            entity.HasOne(d => d.Ticket).WithMany(p => p.Comments)
+                .HasForeignKey(d => d.TicketId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Comments_Ticket");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Comments)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Comments_Users");
+        });
+
         modelBuilder.Entity<Layout>(entity =>
         {
             entity.ToTable("Layout");
@@ -57,9 +81,11 @@ public partial class ToDoListContext : DbContext
             entity.Property(e => e.Street).HasColumnType("text");
         });
 
-        modelBuilder.Entity<Task>(entity =>
+        modelBuilder.Entity<Ticket>(entity =>
         {
-            entity.Property(e => e.TaskId).HasColumnName("TaskID");
+            entity.HasKey(e => e.TicketId).HasName("PK_Tasks");
+
+            entity.Property(e => e.TicketId).HasColumnName("TicketID");
             entity.Property(e => e.CompletedDt)
                 .HasColumnType("datetime")
                 .HasColumnName("CompletedDT");
@@ -69,19 +95,21 @@ public partial class ToDoListContext : DbContext
                 .HasColumnName("CreateDT");
             entity.Property(e => e.LayoutId).HasColumnName("LayoutID");
             entity.Property(e => e.Titile).HasColumnType("text");
+            entity.Property(e => e.UserId).HasColumnName("UserID");
 
-            entity.HasOne(d => d.Layout).WithMany(p => p.Tasks)
+            entity.HasOne(d => d.Layout).WithMany(p => p.Tickets)
                 .HasForeignKey(d => d.LayoutId)
                 .HasConstraintName("FK_Tasks_Layout");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Tasks)
+            entity.HasOne(d => d.User).WithMany(p => p.Tickets)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Tasks_Users");
+                .HasConstraintName("FK_Tickets_Users");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
+            entity.Property(e => e.UserId).HasColumnName("UserID");
             entity.Property(e => e.LocationId).HasColumnName("LocationID");
             entity.Property(e => e.Login).HasColumnType("text");
             entity.Property(e => e.Name).HasColumnType("text");

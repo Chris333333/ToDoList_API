@@ -17,9 +17,11 @@ public partial class User
 
     public int WorkPositionId { get; set; }
 
+    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
     public virtual Location Location { get; set; } = null!;
 
-    public virtual ICollection<Task> Tasks { get; set; } = new List<Task>();
+    public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 
     public virtual WorkPosition WorkPosition { get; set; } = null!;
 }

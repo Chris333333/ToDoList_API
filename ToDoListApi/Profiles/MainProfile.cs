@@ -8,7 +8,7 @@ namespace ToDoListApi.Profiles
     {
         public MainProfile()
         {
-            CreateMap<Data.Entities.ToDoListDatabase.Task,TaskRetriveDTO>();
+            CreateMap<Ticket,TicketRetriveDTO>();
             CreateMap<User, UserRetriveDTO>();
             CreateMap<WorkPosition, WorkPositionRetriveDTO>();
             CreateMap<Location, LocationRetriveDTO>();
@@ -18,7 +18,10 @@ namespace ToDoListApi.Profiles
             CreateMap<WorkPositionDTO, WorkPosition>();
             CreateMap<UserAddDTO, User>();
             CreateMap<LayoutAddDTO, Layout>();
-            CreateMap<TaskAddDTO, Data.Entities.ToDoListDatabase.Task>();
+            CreateMap<TicketAddDTO, Ticket>();
+
+            CreateMap<Comment, CommentsForTicketRetriveDTO>();
+            CreateMap<CommentAddDTO, Comment>();
         }
     }
 }

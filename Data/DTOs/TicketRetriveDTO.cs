@@ -2,7 +2,7 @@
 
 namespace Data.DTOs
 {
-    public class TaskRetriveDTO
+    public class TicketRetriveDTO
     {
         public int TaskId { get; set; }
 

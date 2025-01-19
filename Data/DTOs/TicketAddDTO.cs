@@ -2,7 +2,7 @@
 
 namespace Data.DTOs
 {
-    public class TaskAddDTO
+    public class TicketAddDTO
     {
         public string Titile { get; set; } = null!;
         public int UserId { get; set; }
