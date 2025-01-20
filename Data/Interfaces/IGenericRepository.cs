@@ -1,5 +1,9 @@
 ﻿namespace Data.Interfaces
 {
+    /// <summary>
+    /// Interface for generic repository
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IGenericRepository<T> where T : class
     {
         Task<T> GetByIdAsync(int Id);

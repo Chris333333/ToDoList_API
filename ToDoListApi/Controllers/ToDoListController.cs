@@ -20,6 +20,8 @@ public class ToDoListController(
     ToDoListContext context
     ) : Controller
 {
+    // Setup repositories, mapper and context
+
     private readonly IGenericRepository<Location> _locationRepository = locationRepository;
     private readonly IGenericRepository<Layout> _layoutRepository = layoutRepository;
     private readonly IGenericRepository<Ticket> _taskRepository = taskRepository;
@@ -29,6 +31,10 @@ public class ToDoListController(
     private readonly IMapper _mapper = mapper;
     private readonly ToDoListContext _context = context;
 
+    /// <summary>
+    /// Retrive list of locations
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("LocationList")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -40,7 +46,11 @@ public class ToDoListController(
             return NoContent();
         return Ok(data);
     }
-
+    /// <summary>
+    /// Create new location
+    /// </summary>
+    /// <param name="locationCreateDTO"></param>
+    /// <returns></returns>
     [HttpPost("LocationAdd")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<LocationRetriveDTO>> CreateLocation([FromBody] LocationDTO locationCreateDTO)
@@ -50,7 +60,10 @@ public class ToDoListController(
         await _context.SaveChangesAsync();
         return Ok();
     }
-
+    /// <summary>
+    /// Retrive list of layouts
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("LayoutList")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -63,7 +76,11 @@ public class ToDoListController(
             return NoContent();
         return Ok(data);
     }
-
+    /// <summary>
+    /// Create new layout
+    /// </summary>
+    /// <param name="layoutCreateDTO"></param>
+    /// <returns></returns>
     [HttpPost("LayoutAdd")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> AddLayout([FromBody] LayoutAddDTO layoutCreateDTO)
@@ -73,7 +90,10 @@ public class ToDoListController(
         await _context.SaveChangesAsync();
         return Ok();
     }
-
+    /// <summary>
+    /// Retrive list of tickets
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("TicketsList")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -86,7 +106,11 @@ public class ToDoListController(
             return NoContent();
         return Ok(data);
     }
-
+    /// <summary>
+    /// Create new ticket
+    /// </summary>
+    /// <param name="taskCreateDTO"></param>
+    /// <returns></returns>
     [HttpPost("TicketAdd")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> AddTicket([FromBody] TicketAddDTO taskCreateDTO)
@@ -96,7 +120,11 @@ public class ToDoListController(
         await _context.SaveChangesAsync();
         return Ok();
     }
-
+    /// <summary>
+    /// Update ticket with complete status
+    /// </summary>
+    /// <param name="ticketID"></param>
+    /// <returns></returns>
     [HttpPatch("TicketComplete")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -110,7 +138,29 @@ public class ToDoListController(
         await _context.SaveChangesAsync();
         return Ok();
     }
-
+    /// <summary>
+    /// Delete ticket
+    /// </summary>
+    /// <param name="ticketID"></param>
+    /// <returns></returns>
+    [HttpDelete("TicketDelete")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> DeleteTask([FromBody] int ticketID)
+    {
+        var ticket = await _context.Tickets.FindAsync(ticketID);
+        if (ticket == null)
+            return NotFound();
+        _context.Tickets.Remove(ticket);
+        await _context.SaveChangesAsync();
+        return Ok();
+    }
+    /// <summary>
+    /// Retrive paged list of comments for ticket
+    /// </summary>
+    /// <param name="baseSpecParams">Pagination parametrs</param>
+    /// <param name="ticketID">Ticket ID</param>
+    /// <returns></returns>
     [HttpGet("CommentList/{ticketID}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -127,7 +177,11 @@ public class ToDoListController(
 
         return new Pagination<CommentsForTicketRetriveDTO>(baseSpecParams.PageIndex, baseSpecParams.PageSize, totalItems, data);
     }
-
+    /// <summary>
+    /// Create new comment
+    /// </summary>
+    /// <param name="commentCreateDTO"></param>
+    /// <returns></returns>
     [HttpPost("CommentAdd")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -146,7 +200,10 @@ public class ToDoListController(
 
         return Ok();
     }
-
+    /// <summary>
+    /// Retrive list of users
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("UserList")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -159,7 +216,11 @@ public class ToDoListController(
             return NoContent();
         return Ok(data);
     }
-
+    /// <summary>
+    /// Create new user
+    /// </summary>
+    /// <param name="userCreateDTO"></param>
+    /// <returns></returns>
     [HttpPost("UserAdd")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> AddUser([FromBody] UserAddDTO userCreateDTO)
@@ -169,7 +230,10 @@ public class ToDoListController(
         await _context.SaveChangesAsync();
         return Ok();
     }
-
+    /// <summary>
+    /// Retrive list of work positions
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("WorkPositionList")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -181,7 +245,11 @@ public class ToDoListController(
             return NoContent();
         return Ok(data);
     }
-
+    /// <summary>
+    /// Create new work position
+    /// </summary>
+    /// <param name="workPositionCreateDTO"></param>
+    /// <returns></returns>
     [HttpPost("WorkPositionAdd")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> AddWorkPositon([FromBody] WorkPositionDTO workPositionCreateDTO)
